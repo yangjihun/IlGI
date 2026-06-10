@@ -23,7 +23,7 @@
 - Database: PostgreSQL + PostGIS
 - Map API: 카카오 지도 API
 - Deployment: 미정. MVP 구현 이후 배포 범위를 결정한다.
-- Package Manager: 미정. 프로젝트 생성 시 선택한 패키지 매니저를 기준으로 통일한다.
+- Package Manager: pnpm
 
 ## Working Rules
 
@@ -83,7 +83,7 @@
 
 - 테스트 실행 명령어:
   - 현재 미정. 프로젝트 생성 후 실제 명령어로 갱신한다.
-  - 예: `npm run test`, `npm run lint`, `npm run typecheck`
+  - 예: `pnpm test`, `pnpm lint`, `pnpm typecheck`
 - 필수 테스트 범위:
   - 다이어리 CRUD
   - 장소 CRUD
@@ -160,11 +160,11 @@
 
 ```bash
 # 프로젝트 생성 후 실제 명령어로 갱신한다.
-# npm install
-# npm run dev
-# npm run test
-# npm run lint
-# npm run typecheck
+# pnpm install
+# pnpm dev
+# pnpm test
+# pnpm lint
+# pnpm typecheck
 ```
 
 ## Notes
