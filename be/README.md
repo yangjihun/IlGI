@@ -1,27 +1,40 @@
 # Backend
 
-Node.js와 Express 기반 백엔드 애플리케이션을 위한 디렉토리입니다.
+Node.js, Express, TypeScript 기반 백엔드 애플리케이션입니다.
 
-## 예정 역할
+## 기술 스택
 
-- 다이어리 API
-- 장소 API
-- 카테고리 API
-- 공유 방 및 초대 코드 API
-- 데이터베이스 연동
+- Node.js
+- Express
+- TypeScript
+- Vitest
+- pnpm
 
-## 설정 메모
-
-- 패키지 매니저는 pnpm을 사용합니다.
-- 데이터베이스는 PostgreSQL + PostGIS를 기준으로 준비합니다.
-- 실제 Express 프로젝트 scaffold 시 `AGENTS.md`의 기술 스택과 작업 규칙을 먼저 확인합니다.
-
-## 예정 명령어
+## 실행 명령어
 
 ```bash
 pnpm install
 pnpm dev
-pnpm build
 pnpm typecheck
+pnpm build
 pnpm test
 ```
+
+## API
+
+- `GET /health`: API 서버 상태 확인
+
+## 구조
+
+- `src/app.ts`: Express 앱 생성
+- `src/server.ts`: 서버 실행 진입점
+- `src/routes/`: 라우터
+- `src/controllers/`: 요청/응답 처리
+- `src/services/`: 도메인 로직
+- `tests/`: API 테스트
+
+## 설정 메모
+
+- 기본 포트는 `3000`입니다.
+- `PORT` 환경 변수로 실행 포트를 변경할 수 있습니다.
+- 데이터베이스는 PostgreSQL + PostGIS를 기준으로 준비합니다.
