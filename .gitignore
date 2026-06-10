@@ -38,6 +38,7 @@ lerna-debug.log*
 *.db
 *.dump
 *.sql
+!docker/postgres/init/*.sql
 
 # Runtime and cache files
 .cache/
