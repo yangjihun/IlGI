@@ -1,26 +1,32 @@
 # Frontend
 
-Vue와 TypeScript 기반 프론트엔드 애플리케이션을 위한 디렉토리입니다.
+Vue와 TypeScript 기반 프론트엔드 애플리케이션입니다.
 
-## 예정 역할
+## 기술 스택
 
-- 메인 지도 화면
-- 다이어리 작성 및 상세 화면
-- 가보고 싶은 장소 목록 화면
-- 공유 방 화면
-- 지도 API 연동
+- Vue
+- TypeScript
+- Vite
+- Vue Router
+- pnpm
 
-## 설정 메모
-
-- 패키지 매니저는 pnpm을 사용합니다.
-- 실제 Vue 프로젝트 scaffold 시 `AGENTS.md`의 기술 스택과 작업 규칙을 먼저 확인합니다.
-
-## 예정 명령어
+## 실행 명령어
 
 ```bash
 pnpm install
 pnpm dev
-pnpm build
 pnpm typecheck
+pnpm build
 pnpm test
 ```
+
+## 구조
+
+- `src/main.ts`: Vue 앱 생성 및 router 등록
+- `src/router/`: 라우팅 설정
+- `src/views/`: 화면 단위 컴포넌트
+- `src/style.css`: 전역 스타일
+
+## 현재 상태
+
+현재는 초기 scaffold 단계이며, 메인 화면 기반과 기본 라우팅만 포함합니다.
