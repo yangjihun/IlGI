@@ -23,7 +23,7 @@
 - Database: PostgreSQL + PostGIS
 - Map API: 카카오 지도 API
 - Deployment: 미정. MVP 구현 이후 배포 범위를 결정한다.
-- Package Manager: 미정. 프로젝트 생성 시 선택한 패키지 매니저를 기준으로 통일한다.
+- Package Manager: pnpm
 
 ## Working Rules
 
@@ -35,16 +35,23 @@
   - 기능 단위 GitHub Issue를 기준으로 작업한다.
   - Issue에는 기능 설명, 요구사항, 완료 조건, 테스트 기준, 관련 화면 또는 API를 포함해야 한다.
   - 큰 기능은 다이어리, 장소 목록, 공유 방, 지도 기능 등 작은 구현 단위로 나눈다.
+- 작성 언어 규칙:
+  - Issue 제목과 본문, PR 제목과 설명, 문서, 완료 보고는 가능한 한 한국어로 작성한다.
+  - 기술 명사, 라이브러리명, 프레임워크명, API명, 파일명, 명령어는 영어 원문을 사용해도 된다.
 - 브랜치 규칙:
   - 기본 브랜치에서 직접 기능 개발하지 않는다.
   - 기능 작업은 Issue 단위 브랜치에서 진행한다.
   - 브랜치명은 가능하면 `feature/issue-번호-요약`, `fix/issue-번호-요약` 형식을 사용한다.
 - 커밋 규칙:
   - 하나의 커밋은 하나의 의도를 갖도록 작게 작성한다.
-  - 커밋 메시지는 변경 목적이 드러나게 작성한다.
-  - 예: `feat: add diary create api`, `fix: validate invite code`
+  - 커밋 메시지는 Conventional Commits 형식을 사용한다.
+  - 커밋 메시지의 type은 `feat`, `fix`, `docs`, `chore`, `refactor`, `test`처럼 영어 키워드를 사용한다.
+  - type 뒤 설명은 한국어로 작성해도 된다.
+  - 예: `feat: 다이어리 생성 API 추가`, `fix: 초대 코드 검증 오류 수정`
 - PR 규칙:
   - PR에는 작업한 Issue, 구현 내용, 테스트 결과, 남은 이슈를 포함한다.
+  - PR 제목 앞에는 `[feat]`, `[fix]`, `[docs]`, `[chore]`, `[refactor]`, `[test]`처럼 작업 유형을 나타내는 접두어를 붙인다.
+  - PR 제목에는 `[codex]`처럼 작성 주체를 나타내는 접두어를 붙이지 않는다.
   - MVP 범위를 벗어나는 변경은 별도 Issue로 분리한다.
   - 최종 머지는 사람이 직접 수행한다. AI 에이전트는 임의로 PR을 머지하지 않는다.
 - 코드 리뷰 기준:
@@ -83,7 +90,7 @@
 
 - 테스트 실행 명령어:
   - 현재 미정. 프로젝트 생성 후 실제 명령어로 갱신한다.
-  - 예: `npm run test`, `npm run lint`, `npm run typecheck`
+  - 예: `pnpm test`, `pnpm lint`, `pnpm typecheck`
 - 필수 테스트 범위:
   - 다이어리 CRUD
   - 장소 CRUD
@@ -160,11 +167,11 @@
 
 ```bash
 # 프로젝트 생성 후 실제 명령어로 갱신한다.
-# npm install
-# npm run dev
-# npm run test
-# npm run lint
-# npm run typecheck
+# pnpm install
+# pnpm dev
+# pnpm test
+# pnpm lint
+# pnpm typecheck
 ```
 
 ## Notes
