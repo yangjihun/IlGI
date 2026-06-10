@@ -89,8 +89,13 @@
 ## Testing Rules
 
 - 테스트 실행 명령어:
-  - 현재 미정. 프로젝트 생성 후 실제 명령어로 갱신한다.
-  - 예: `pnpm test`, `pnpm lint`, `pnpm typecheck`
+  - Frontend: `cd fe && pnpm typecheck`
+  - Frontend: `cd fe && pnpm build`
+  - Frontend: `cd fe && pnpm test`
+  - Backend: `cd be && pnpm typecheck`
+  - Backend: `cd be && pnpm build`
+  - Backend: `cd be && pnpm test`
+  - Database: `docker compose config`
 - 필수 테스트 범위:
   - 다이어리 CRUD
   - 장소 CRUD
@@ -166,12 +171,26 @@
 ## Useful Commands
 
 ```bash
-# 프로젝트 생성 후 실제 명령어로 갱신한다.
-# pnpm install
-# pnpm dev
-# pnpm test
-# pnpm lint
-# pnpm typecheck
+# Frontend
+cd fe
+pnpm install
+pnpm dev
+pnpm typecheck
+pnpm build
+pnpm test
+
+# Backend
+cd be
+pnpm install
+pnpm dev
+pnpm typecheck
+pnpm build
+pnpm test
+
+# Database
+docker compose up -d db
+docker compose config
+docker compose down
 ```
 
 ## Notes
