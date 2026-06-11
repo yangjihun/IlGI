@@ -1,30 +1,114 @@
+<script setup lang="ts">
+import MapPreview from '../components/MapPreview.vue'
+import SummaryCard from '../components/SummaryCard.vue'
+
+type MarkerType = 'diary' | 'wishlist' | 'shared'
+
+type MapMarker = {
+  id: string
+  type: MarkerType
+  title: string
+  description: string
+  position: {
+    top: string
+    left: string
+  }
+}
+
+const markers: MapMarker[] = [
+  {
+    id: 'mangwon',
+    type: 'diary',
+    title: '망원 한강공원',
+    description: '노을 보면서 남긴 산책 기록',
+    position: { top: '38%', left: '26%' },
+  },
+  {
+    id: 'seongsu',
+    type: 'wishlist',
+    title: '성수 작은 식당',
+    description: '이번 주말에 같이 가보기',
+    position: { top: '28%', left: '62%' },
+  },
+  {
+    id: 'bukchon',
+    type: 'shared',
+    title: '북촌 골목',
+    description: '둘 다 저장한 다음 데이트 장소',
+    position: { top: '58%', left: '48%' },
+  },
+  {
+    id: 'yeonnam',
+    type: 'diary',
+    title: '연남동 카페',
+    description: '처음 같이 쓴 장소 일기',
+    position: { top: '68%', left: '21%' },
+  },
+  {
+    id: 'jamsil',
+    type: 'wishlist',
+    title: '잠실 야경길',
+    description: '비 오는 날 말고 맑은 날 가기',
+    position: { top: '48%', left: '76%' },
+  },
+]
+
+const activeMarker = markers[0]
+
+const wishlistItems = ['성수 작은 식당', '잠실 야경길', '북촌 골목 산책']
+</script>
+
 <template>
-  <main class="app-shell">
-    <section class="intro">
-      <p class="eyebrow">장소 기반 다이어리</p>
-      <h1>IlGI</h1>
-      <p class="description">
-        방문한 장소를 기준으로 일상을 기록하고, 함께 가보고 싶은 장소를 공유하는
-        서비스입니다.
-      </p>
+  <main class="home-page">
+    <header class="home-header">
+      <div>
+        <p class="home-header__eyebrow">우리의 장소 일기</p>
+        <h1>IlGI</h1>
+      </div>
+
+      <div class="home-header__actions" aria-label="공유 방 상태">
+        <span class="room-pill">2명이 함께 기록 중</span>
+        <button class="icon-button" type="button" aria-label="알림 보기">♡</button>
+        <span class="profile-avatar" aria-label="프로필">J</span>
+      </div>
+    </header>
+
+    <section class="hero-layout" aria-label="장소 기반 다이어리 홈">
+      <div class="hero-copy">
+        <p class="hero-copy__label">Today near us</p>
+        <h2>둘이 남긴 하루가 지도 위에 천천히 쌓여요.</h2>
+        <p>
+          다녀온 곳은 다이어리로, 가보고 싶은 곳은 함께 보는 목록으로 모아두세요.
+        </p>
+        <div class="hero-actions">
+          <button class="primary-button" type="button">오늘 기록 남기기</button>
+          <button class="secondary-button" type="button">가고 싶은 곳 추가</button>
+        </div>
+      </div>
+
+      <MapPreview :markers="markers" :active-marker="activeMarker" />
     </section>
 
-    <section class="feature-grid" aria-label="핵심 기능">
-      <article>
-        <span>01</span>
-        <h2>지도 위 기록</h2>
-        <p>다녀온 장소의 다이어리를 지도 마커로 모아봅니다.</p>
-      </article>
-      <article>
-        <span>02</span>
-        <h2>장소 목록</h2>
-        <p>가보고 싶은 장소를 카테고리별로 정리합니다.</p>
-      </article>
-      <article>
-        <span>03</span>
-        <h2>공유 방</h2>
-        <p>초대 코드로 참여한 사용자와 장소 목록을 함께 관리합니다.</p>
-      </article>
+    <section class="summary-grid" aria-label="오늘의 요약">
+      <SummaryCard
+        eyebrow="Diary"
+        title="오늘의 기록"
+        value="3"
+        description="망원 한강공원 산책 기록이 방금 저장됐어요."
+      />
+      <SummaryCard
+        eyebrow="Wishlist"
+        title="같이 가고 싶은 곳"
+        value="12"
+        description="이번 주말에 고르기 좋은 장소를 모아뒀어요."
+        :items="wishlistItems"
+      />
+      <SummaryCard
+        eyebrow="Room"
+        title="우리 방"
+        value="IlGI-204"
+        description="초대 코드로 만든 공유 방에서 장소 목록을 함께 보고 있어요."
+      />
     </section>
   </main>
 </template>
