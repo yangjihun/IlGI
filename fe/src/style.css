@@ -378,6 +378,19 @@ button {
   color: #5e7284;
 }
 
+.marker-preview__action {
+  width: auto;
+  margin-top: 14px;
+}
+
+.map-preview--empty {
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: #5e7284;
+  font-weight: 800;
+}
+
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -572,6 +585,16 @@ button {
 
 .muted-text {
   color: #6d8194;
+}
+
+.status-message {
+  margin: 0;
+  color: #526a80;
+  font-weight: 800;
+}
+
+.status-message--error {
+  color: #b9556c;
 }
 
 .preview-panel {
