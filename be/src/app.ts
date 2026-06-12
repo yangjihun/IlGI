@@ -1,7 +1,7 @@
 import cors from 'cors'
 import express from 'express'
 import type { DiaryRepository } from './domains/diary.js'
-import { createInMemoryDiaryRepository } from './repositories/in-memory-diary.repository.js'
+import { createDiaryRepository } from './repositories/diary-repository.factory.js'
 import { createDiaryRouter } from './routes/diary.route.js'
 import { healthRouter } from './routes/health.route.js'
 import { prototypeRouter } from './routes/prototype.route.js'
@@ -12,7 +12,7 @@ export type AppOptions = {
 
 export function createApp(options: AppOptions = {}) {
   const app = express()
-  const diaryRepository = options.diaryRepository ?? createInMemoryDiaryRepository()
+  const diaryRepository = options.diaryRepository ?? createDiaryRepository(process.env)
 
   app.use(cors())
   app.use(express.json())
