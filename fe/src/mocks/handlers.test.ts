@@ -42,4 +42,28 @@ describe('prototype mock API', () => {
       participantCount: prototypeData.rooms[0].participants.length,
     })
   })
+
+  it('creates a diary from form input', async () => {
+    const payload = {
+      title: '한강 산책 기록',
+      author: 'J',
+      date: '2026-06-12',
+      placeName: '망원 한강공원',
+      content: '해질녘 산책이 좋았다.',
+      memo: '다음에는 돗자리 챙기기',
+    }
+
+    const response = await fetch('http://localhost/api/diaries', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+    const body = await response.json()
+
+    expect(response.status).toBe(201)
+    expect(body.diary).toEqual({
+      id: expect.stringMatching(/^diary-/),
+      ...payload,
+    })
+  })
 })

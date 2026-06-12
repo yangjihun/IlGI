@@ -38,11 +38,24 @@ export type Room = {
 }
 
 export type DiaryDraft = {
+  title?: string
+  author?: string
   date: string
   placeName: string
   content: string
   memo: string
 }
+
+export type CreateDiaryInput = {
+  title: string
+  author: string
+  date: string
+  placeName: string
+  content: string
+  memo: string
+}
+
+export type UpdateDiaryInput = Partial<CreateDiaryInput>
 
 export type PlaceDraft = {
   name: string
@@ -88,7 +101,29 @@ export function fetchDiaries() {
 }
 
 export function fetchDiary(id: string) {
-  return requestJson<{ diary: Diary }>('/api/diaries/' + id)
+  return requestJson<{ diary: Diary }>('/api/diaries/' + encodeURIComponent(id))
+}
+
+export function createDiary(input: CreateDiaryInput) {
+  return requestJson<{ diary: Diary }>('/api/diaries', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  })
+}
+
+export function updateDiary(id: string, input: UpdateDiaryInput) {
+  return requestJson<{ diary: Diary }>('/api/diaries/' + encodeURIComponent(id), {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  })
+}
+
+export function deleteDiary(id: string) {
+  return requestJson<{ deleted: boolean }>('/api/diaries/' + encodeURIComponent(id), {
+    method: 'DELETE',
+  })
 }
 
 export function fetchPlaces() {

@@ -20,7 +20,7 @@ const router = createRouter({
       component: DiaryCreateView,
     },
     {
-      path: '/diaries/sample',
+      path: '/diaries/:id',
       name: 'diary-detail',
       component: DiaryDetailView,
     },
