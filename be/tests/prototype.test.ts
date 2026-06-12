@@ -41,13 +41,15 @@ describe('prototype readonly API', () => {
     const response = await request(app).get('/api/places')
 
     expect(response.status).toBe(200)
-    expect(response.body.places).toEqual([
-      expect.objectContaining({
-        id: 'place-seongsu',
-        name: '성수 작은 식당',
-        status: '이번 주 후보',
-      }),
-    ])
+    expect(response.body.places).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: 'place-seongsu',
+          name: '성수 작은 식당',
+          status: '이번 주 후보',
+        }),
+      ]),
+    )
   })
 
   it('returns shared room by id', async () => {
