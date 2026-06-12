@@ -1,13 +1,28 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { fetchPlaces, type Place } from '../api/prototypeApi'
 import AppShell from '../components/AppShell.vue'
 import GlassPanel from '../components/GlassPanel.vue'
 import PageHero from '../components/PageHero.vue'
 
-const places = [
-  { name: '성수 작은 식당', category: '맛집', status: '이번 주 후보' },
-  { name: '잠실 야경길', category: '산책', status: '저장됨' },
-  { name: '북촌 골목 산책', category: '여행지', status: '같이 저장' },
+const fallbackPlaces: Place[] = [
+  { id: 'place-seongsu', name: '성수 작은 식당', category: '맛집', status: '이번 주 후보' },
+  { id: 'place-jamsil', name: '잠실 야경길', category: '산책', status: '저장됨' },
+  { id: 'place-bukchon', name: '북촌 골목 산책', category: '여행지', status: '같이 저장' },
 ]
+
+const places = ref(fallbackPlaces)
+const apiStatus = ref('기본 mock data 사용 중')
+
+onMounted(async () => {
+  try {
+    const response = await fetchPlaces()
+    places.value = response.places
+    apiStatus.value = 'backend mock API 연결됨'
+  } catch {
+    apiStatus.value = 'backend API 연결 실패, 기본 mock data 표시'
+  }
+})
 </script>
 
 <template>
@@ -29,7 +44,7 @@ const places = [
           </div>
 
           <ul class="place-list">
-            <li v-for="place in places" :key="place.name">
+            <li v-for="place in places" :key="place.id">
               <div>
                 <strong>{{ place.name }}</strong>
                 <span>{{ place.category }}</span>
@@ -52,7 +67,7 @@ const places = [
             </label>
             <button class="primary-button" type="button">장소 추가하기</button>
           </div>
-          <p class="muted-text">J와 H가 함께 편집할 수 있는 공유 장소 목록이에요.</p>
+          <p class="muted-text">J와 H가 함께 편집할 수 있는 공유 장소 목록이에요. {{ apiStatus }}</p>
         </GlassPanel>
       </section>
     </div>
