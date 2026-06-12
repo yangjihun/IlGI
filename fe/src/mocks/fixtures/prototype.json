@@ -1,0 +1,119 @@
+{
+  "home": {
+    "markers": [
+      {
+        "id": "mangwon",
+        "type": "diary",
+        "title": "망원 한강공원",
+        "description": "노을을 보며 남긴 산책 기록",
+        "position": { "top": "38%", "left": "26%" }
+      },
+      {
+        "id": "seongsu",
+        "type": "wishlist",
+        "title": "성수 작은 식당",
+        "description": "이번 주말에 같이 가보기",
+        "position": { "top": "28%", "left": "62%" }
+      },
+      {
+        "id": "bukchon",
+        "type": "shared",
+        "title": "북촌 골목",
+        "description": "함께 저장한 다음 데이트 장소",
+        "position": { "top": "58%", "left": "48%" }
+      },
+      {
+        "id": "yeonnam",
+        "type": "diary",
+        "title": "연남동 카페",
+        "description": "처음 같이 간 장소 일기",
+        "position": { "top": "68%", "left": "21%" }
+      },
+      {
+        "id": "jamsil",
+        "type": "wishlist",
+        "title": "잠실 야경길",
+        "description": "비 오는 날 말고 맑은 날 가기",
+        "position": { "top": "48%", "left": "76%" }
+      }
+    ],
+    "diaryCount": 3,
+    "wishlistCount": 12,
+    "roomId": "room-ilgi-204"
+  },
+  "diaries": [
+    {
+      "id": "diary-mangwon",
+      "title": "노을을 보며 남긴 산책 기록",
+      "author": "J",
+      "date": "2026.06.11",
+      "placeName": "망원 한강공원",
+      "content": "강가를 따라 걷다가 하늘이 분홍색으로 바뀌는 걸 같이 보았다. 별일 아닌 하루였는데, 이 장소 덕분에 오래 기억할 것 같다.",
+      "memo": "다음에는 야경 시간에 맞춰 다시 오기."
+    }
+  ],
+  "places": [
+    {
+      "id": "place-seongsu",
+      "name": "성수 작은 식당",
+      "category": "맛집",
+      "status": "이번 주 후보"
+    },
+    {
+      "id": "place-jamsil",
+      "name": "잠실 야경길",
+      "category": "산책",
+      "status": "저장됨"
+    },
+    {
+      "id": "place-bukchon",
+      "name": "북촌 골목 산책",
+      "category": "여행지",
+      "status": "같이 저장"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "room-ilgi-204",
+      "name": "우리의 주말 지도",
+      "inviteCode": "IlGI-204",
+      "participants": ["J", "H"],
+      "timeline": ["망원 한강공원 기록 추가", "성수 작은 식당 후보 등록", "북촌 골목 산책을 같이 저장"],
+      "places": [
+        {
+          "id": "place-seongsu",
+          "name": "성수 작은 식당",
+          "category": "맛집",
+          "status": "이번 주 후보"
+        },
+        {
+          "id": "place-jamsil",
+          "name": "잠실 야경길",
+          "category": "산책",
+          "status": "노을 보기 좋은 날"
+        },
+        {
+          "id": "place-bukchon",
+          "name": "북촌 골목 산책",
+          "category": "여행지",
+          "status": "같이 저장"
+        }
+      ]
+    }
+  ],
+  "drafts": {
+    "diary": {
+      "date": "2026-06-11",
+      "placeName": "망원 한강공원",
+      "content": "노을이 천천히 내려오고, 같이 걷던 길이 조용해서 좋았다.",
+      "memo": "다음에는 돗자리랑 따뜻한 차를 챙겨가기."
+    },
+    "place": {
+      "name": "서촌 작은 책방",
+      "category": "데이트"
+    },
+    "room": {
+      "name": "우리의 주말 지도"
+    }
+  }
+}
