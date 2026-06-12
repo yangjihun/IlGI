@@ -7,12 +7,16 @@ import {
   listPlaces,
 } from '../services/prototype.service.js'
 
+function getStringParam(value: string | string[]) {
+  return Array.isArray(value) ? value[0] : value
+}
+
 export function getDiaries(_request: Request, response: Response) {
   response.status(200).json({ diaries: listDiaries() })
 }
 
 export function getDiary(request: Request, response: Response) {
-  const diary = findDiaryById(request.params.id)
+  const diary = findDiaryById(getStringParam(request.params.id))
 
   if (!diary) {
     response.status(404).json({ message: 'Diary not found' })
@@ -27,7 +31,7 @@ export function getPlaces(_request: Request, response: Response) {
 }
 
 export function getRoom(request: Request, response: Response) {
-  const room = findRoomById(request.params.id)
+  const room = findRoomById(getStringParam(request.params.id))
 
   if (!room) {
     response.status(404).json({ message: 'Room not found' })
