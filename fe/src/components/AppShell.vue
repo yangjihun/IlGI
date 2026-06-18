@@ -1,3 +1,10 @@
+<script setup lang="ts">
+import { getCurrentUser } from '../composables/useCurrentUser'
+
+const user = getCurrentUser()
+const avatarLetter = user?.name?.[0]?.toUpperCase() ?? '?'
+</script>
+
 <template>
   <main class="app-shell">
     <header class="app-header">
@@ -15,9 +22,9 @@
       </nav>
 
       <div class="app-header__actions" aria-label="공유 방 상태">
-        <span class="room-pill">2명이 함께 기록 중</span>
-        <button class="icon-button" type="button" aria-label="알림 보기">♡</button>
-        <span class="profile-avatar" aria-label="프로필">J</span>
+        <span class="room-pill">함께 기록 중</span>
+        <button class="icon-button" type="button" aria-label="가고 싶은 곳 보기" @click="$router.push({ name: 'places' })">♡</button>
+        <span class="profile-avatar" :aria-label="`${user?.name ?? ''} 프로필`">{{ avatarLetter }}</span>
       </div>
     </header>
 

@@ -1,14 +1,22 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { getCurrentUser } from '../composables/useCurrentUser'
 import DiaryCreateView from '../views/DiaryCreateView.vue'
 import DiaryDetailView from '../views/DiaryDetailView.vue'
 import HomeView from '../views/HomeView.vue'
 import InviteView from '../views/InviteView.vue'
 import PlacesView from '../views/PlacesView.vue'
 import RoomView from '../views/RoomView.vue'
+import WelcomeView from '../views/WelcomeView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
+  scrollBehavior: () => ({ top: 0 }),
   routes: [
+    {
+      path: '/welcome',
+      name: 'welcome',
+      component: WelcomeView,
+    },
     {
       path: '/',
       name: 'home',
@@ -20,7 +28,7 @@ const router = createRouter({
       component: DiaryCreateView,
     },
     {
-      path: '/diaries/sample',
+      path: '/diaries/:id',
       name: 'diary-detail',
       component: DiaryDetailView,
     },
@@ -40,6 +48,11 @@ const router = createRouter({
       component: InviteView,
     },
   ],
+})
+
+router.beforeEach((to) => {
+  if (to.name === 'welcome') return
+  if (!getCurrentUser()) return { name: 'welcome' }
 })
 
 export default router

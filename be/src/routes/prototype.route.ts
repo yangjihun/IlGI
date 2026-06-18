@@ -1,16 +1,16 @@
 import { Router } from 'express'
 import {
-  getDiaries,
-  getDiary,
+  getDiaryDraftHandler,
+  getHome,
+  getPlaceDraftHandler,
   getPlaces,
-  getRoom,
-  previewInvitation,
+  getRoomDraftHandler,
 } from '../controllers/prototype.controller.js'
 
 export const prototypeRouter = Router()
 
-prototypeRouter.get('/diaries', getDiaries)
-prototypeRouter.get('/diaries/:id', getDiary)
+prototypeRouter.get('/prototype/home', getHome)
+prototypeRouter.get('/prototype/diary-draft', getDiaryDraftHandler)
+prototypeRouter.get('/prototype/place-draft', getPlaceDraftHandler)
+prototypeRouter.get('/prototype/room-draft', getRoomDraftHandler)
 prototypeRouter.get('/places', getPlaces)
-prototypeRouter.get('/rooms/:id', getRoom)
-prototypeRouter.post('/invitations/preview', previewInvitation)

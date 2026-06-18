@@ -5,6 +5,7 @@ import { createDiaryRepository } from './repositories/diary-repository.factory.j
 import { createDiaryRouter } from './routes/diary.route.js'
 import { healthRouter } from './routes/health.route.js'
 import { prototypeRouter } from './routes/prototype.route.js'
+import { roomRouter } from './routes/room.route.js'
 
 export type AppOptions = {
   diaryRepository?: DiaryRepository
@@ -19,6 +20,7 @@ export function createApp(options: AppOptions = {}) {
 
   app.use('/health', healthRouter)
   app.use('/api', createDiaryRouter(diaryRepository))
+  app.use('/api', roomRouter)
   app.use('/api', prototypeRouter)
 
   return app

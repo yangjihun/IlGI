@@ -5,18 +5,33 @@ import { fetchRoom, type Room } from '../api/prototypeApi'
 import AppShell from '../components/AppShell.vue'
 import GlassPanel from '../components/GlassPanel.vue'
 import PageHero from '../components/PageHero.vue'
+import { getCurrentUser } from '../composables/useCurrentUser'
 
 const room = ref<Room | null>(null)
+const copyMessage = ref('')
 const errorMessage = ref('')
 
+const user = getCurrentUser()
+
 onMounted(async () => {
+  if (!user) return
   try {
-    const response = await fetchRoom('room-ilgi-204')
+    const response = await fetchRoom(user.roomId)
     room.value = response.room
   } catch {
     errorMessage.value = '공유 방 데이터를 불러오지 못했습니다.'
   }
 })
+
+async function copyInviteCode() {
+  if (!room.value) return
+  try {
+    await navigator.clipboard.writeText(room.value.inviteCode)
+    copyMessage.value = '초대 코드를 복사했습니다.'
+  } catch {
+    copyMessage.value = `${room.value.inviteCode} 코드를 직접 복사해 주세요.`
+  }
+}
 </script>
 
 <template>
@@ -25,10 +40,10 @@ onMounted(async () => {
       <PageHero
         eyebrow="Shared Room"
         :title="room?.name ?? '우리의 장소 방'"
-        description="초대 코드로 함께 들어온 공간에서 기록과 가보고 싶은 곳을 같이 관리해요."
+        description="초대 코드로 함께 들어온 공간에서 기록과 가보고 싶은 곳을 같이 관리합니다."
       />
 
-      <p v-if="errorMessage" class="muted-text">{{ errorMessage }}</p>
+      <p v-if="errorMessage" class="status-message status-message--error">{{ errorMessage }}</p>
 
       <section v-if="room" class="panel-grid">
         <GlassPanel>
@@ -36,9 +51,12 @@ onMounted(async () => {
           <h2>{{ room.inviteCode }}</h2>
           <p class="muted-text">참여자 {{ room.participants.length }}명 · 공동 편집 가능</p>
           <div class="participant-row" aria-label="참여자">
-            <span v-for="participant in room.participants" :key="participant">{{ participant }}</span>
+            <span v-for="participant in room.participants" :key="participant">
+              {{ participant[0]?.toUpperCase() }}
+            </span>
           </div>
-          <button class="primary-button" type="button">초대 코드 복사</button>
+          <button class="primary-button" type="button" @click="copyInviteCode">초대 코드 복사</button>
+          <p v-if="copyMessage" class="muted-text">{{ copyMessage }}</p>
         </GlassPanel>
 
         <GlassPanel>
