@@ -1,6 +1,7 @@
 const STORAGE_KEY = 'ilgi-user'
 
 export type CurrentUser = {
+  id: string
   name: string
   roomId: string
 }
@@ -9,7 +10,9 @@ export function getCurrentUser(): CurrentUser | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return null
-    return JSON.parse(raw) as CurrentUser
+    const parsed = JSON.parse(raw) as Partial<CurrentUser>
+    if (!parsed.id || !parsed.name || !parsed.roomId) return null
+    return parsed as CurrentUser
   } catch {
     return null
   }
