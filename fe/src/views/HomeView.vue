@@ -6,7 +6,6 @@ import {
   fetchRoom,
   type HomeSummary,
   type MapMarker,
-  type Place,
   type Room,
 } from '../api/prototypeApi'
 import AppShell from '../components/AppShell.vue'
