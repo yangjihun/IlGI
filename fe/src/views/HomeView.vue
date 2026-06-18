@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import {
+  fetchDiaries,
   fetchHomeSummary,
   fetchRoom,
   type HomeSummary,
@@ -15,6 +16,7 @@ import { getCurrentUser } from '../composables/useCurrentUser'
 
 const home = ref<HomeSummary | null>(null)
 const room = ref<Room | null>(null)
+const diaryCount = ref(0)
 const selectedMarkerId = ref('')
 const isLoading = ref(true)
 const errorMessage = ref('')
@@ -34,13 +36,15 @@ function selectMarker(marker: MapMarker) {
 onMounted(async () => {
   if (!user) return
   try {
-    const [homeResponse, roomResponse] = await Promise.all([
+    const [homeResponse, roomResponse, diariesResponse] = await Promise.all([
       fetchHomeSummary(),
       fetchRoom(user.roomId),
+      fetchDiaries(),
     ])
 
     home.value = homeResponse.home
     room.value = roomResponse.room
+    diaryCount.value = diariesResponse.diaries.length
     selectedMarkerId.value = homeResponse.home.markers[0]?.id ?? ''
   } catch {
     errorMessage.value = '홈 데이터를 불러오지 못했습니다.'
@@ -80,13 +84,13 @@ onMounted(async () => {
       <SummaryCard
         eyebrow="Diary"
         title="오늘의 기록"
-        :value="String(home?.diaryCount ?? 0)"
+        :value="String(diaryCount)"
         description="최근 남긴 장소 다이어리를 지도와 함께 확인할 수 있습니다."
       />
       <SummaryCard
         eyebrow="Wishlist"
         title="같이 가고 싶은 곳"
-        :value="String(home?.wishlistCount ?? room?.places.length ?? 0)"
+        :value="String(room?.places.length ?? 0)"
         description="이번 주말에 함께 고를 장소를 모아둘 수 있습니다."
         :items="wishlistItems"
       />

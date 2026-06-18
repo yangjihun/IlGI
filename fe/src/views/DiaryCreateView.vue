@@ -1,12 +1,7 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import {
-  createDiary,
-  fetchDiaryDraft,
-  type CreateDiaryInput,
-  type DiaryDraft,
-} from '../api/prototypeApi'
+import { createDiary, type CreateDiaryInput } from '../api/prototypeApi'
 import AppShell from '../components/AppShell.vue'
 import GlassPanel from '../components/GlassPanel.vue'
 import PageHero from '../components/PageHero.vue'
@@ -29,23 +24,6 @@ const form = reactive<CreateDiaryInput>({
 const previewTitle = computed(() => form.placeName.trim() || '장소 미리보기')
 const previewContent = computed(() => form.content.trim() || '작성한 기억이 이곳에 미리 표시됩니다.')
 
-function fillDraft(draft: DiaryDraft) {
-  form.title = draft.title ?? `${draft.placeName} 기록`
-  form.author = draft.author ?? user?.name ?? form.author
-  form.date = draft.date
-  form.placeName = draft.placeName
-  form.content = draft.content
-  form.memo = draft.memo
-}
-
-onMounted(async () => {
-  try {
-    const response = await fetchDiaryDraft()
-    fillDraft(response.draft)
-  } catch {
-    errorMessage.value = '작성 예시 데이터를 불러오지 못했습니다. 직접 입력해 주세요.'
-  }
-})
 
 async function handleSubmit() {
   errorMessage.value = ''
