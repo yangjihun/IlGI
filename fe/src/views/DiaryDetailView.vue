@@ -99,7 +99,7 @@ async function handleDelete() {
 
   try {
     await deleteDiary(String(route.params.id))
-    await router.push({ name: 'home' })
+    await router.push({ name: 'diary-list' })
   } catch {
     errorMessage.value = '다이어리를 삭제하지 못했습니다.'
   } finally {

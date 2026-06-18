@@ -15,7 +15,7 @@ const avatarLetter = user?.name?.[0]?.toUpperCase() ?? '?'
 
       <nav class="app-nav" aria-label="주요 화면">
         <RouterLink to="/">홈</RouterLink>
-        <RouterLink to="/diaries/new">기록</RouterLink>
+        <RouterLink to="/diaries">기록</RouterLink>
         <RouterLink to="/places">장소</RouterLink>
         <RouterLink to="/rooms/sample">우리 방</RouterLink>
         <RouterLink to="/invite">초대</RouterLink>

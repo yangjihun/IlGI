@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { getCurrentUser } from '../composables/useCurrentUser'
 import DiaryCreateView from '../views/DiaryCreateView.vue'
 import DiaryDetailView from '../views/DiaryDetailView.vue'
+import DiaryListView from '../views/DiaryListView.vue'
 import HomeView from '../views/HomeView.vue'
 import InviteView from '../views/InviteView.vue'
 import PlacesView from '../views/PlacesView.vue'
@@ -21,6 +22,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+    },
+    {
+      path: '/diaries',
+      name: 'diary-list',
+      component: DiaryListView,
     },
     {
       path: '/diaries/new',
