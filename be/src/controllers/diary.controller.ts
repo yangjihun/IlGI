@@ -55,7 +55,7 @@ export function createDiaryController(service: DiaryService) {
         return
       }
 
-      response.status(204).send()
+      response.status(200).json({ deleted: true })
     },
   }
 }

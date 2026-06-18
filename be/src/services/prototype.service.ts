@@ -1,14 +1,34 @@
 type MarkerType = 'diary' | 'wishlist' | 'shared'
 
-export type Diary = {
+type MapMarker = {
   id: string
+  type: MarkerType
+  title: string
+  description: string
+  position: { top: string; left: string }
+}
+
+export type HomeSummary = {
+  markers: MapMarker[]
+  diaryCount: number
+  wishlistCount: number
+  roomId: string
+}
+
+export type DiaryDraft = {
   date: string
   placeName: string
-  title: string
-  memory: string
+  content: string
   memo: string
-  author: string
-  markerType: MarkerType
+}
+
+export type PlaceDraft = {
+  name: string
+  category: string
+}
+
+export type RoomDraft = {
+  name: string
 }
 
 export type Place = {
@@ -34,38 +54,10 @@ export type InvitationPreview = {
   participantCount: number
 }
 
-const diaries: Diary[] = [
-  {
-    id: 'diary-mangwon',
-    date: '2026-06-11',
-    placeName: '망원 한강공원',
-    title: '노을 보면서 남긴 산책 기록',
-    memory: '강가를 따라 걷다가 하늘이 분홍색으로 바뀌는 걸 같이 봤다.',
-    memo: '다음에는 야경 시간에 맞춰 다시 오기.',
-    author: 'J',
-    markerType: 'diary',
-  },
-]
-
 const places: Place[] = [
-  {
-    id: 'place-seongsu',
-    name: '성수 작은 식당',
-    category: '맛집',
-    status: '이번 주 후보',
-  },
-  {
-    id: 'place-jamsil',
-    name: '잠실 야경길',
-    category: '산책',
-    status: '저장됨',
-  },
-  {
-    id: 'place-bukchon',
-    name: '북촌 골목 산책',
-    category: '여행지',
-    status: '같이 저장',
-  },
+  { id: 'place-seongsu', name: '성수 작은 식당', category: '맛집', status: '이번 주 후보' },
+  { id: 'place-jamsil', name: '잠실 야경길', category: '산책', status: '저장됨' },
+  { id: 'place-bukchon', name: '북촌 골목 산책', category: '여행지', status: '같이 저장' },
 ]
 
 const rooms: Room[] = [
@@ -79,12 +71,49 @@ const rooms: Room[] = [
   },
 ]
 
-export function listDiaries() {
-  return diaries
+const homeSummary: HomeSummary = {
+  markers: [
+    { id: 'mangwon', type: 'diary', title: '망원 한강공원', description: '노을을 보며 남긴 산책 기록', position: { top: '38%', left: '26%' } },
+    { id: 'seongsu', type: 'wishlist', title: '성수 작은 식당', description: '이번 주말에 같이 가보기', position: { top: '28%', left: '62%' } },
+    { id: 'bukchon', type: 'shared', title: '북촌 골목', description: '함께 저장한 다음 데이트 장소', position: { top: '58%', left: '48%' } },
+    { id: 'yeonnam', type: 'diary', title: '연남동 카페', description: '처음 같이 간 장소 일기', position: { top: '68%', left: '21%' } },
+    { id: 'jamsil', type: 'wishlist', title: '잠실 야경길', description: '비 오는 날 말고 맑은 날 가기', position: { top: '48%', left: '76%' } },
+  ],
+  diaryCount: 3,
+  wishlistCount: 12,
+  roomId: 'room-ilgi-204',
 }
 
-export function findDiaryById(id: string) {
-  return diaries.find((diary) => diary.id === id)
+const diaryDraft: DiaryDraft = {
+  date: '2026-06-11',
+  placeName: '망원 한강공원',
+  content: '노을이 천천히 내려오고, 같이 걷던 길이 조용해서 좋았다.',
+  memo: '다음에는 돗자리랑 따뜻한 차를 챙겨가기.',
+}
+
+const placeDraft: PlaceDraft = {
+  name: '서촌 작은 책방',
+  category: '데이트',
+}
+
+const roomDraft: RoomDraft = {
+  name: '우리의 주말 지도',
+}
+
+export function getHomeSummary() {
+  return homeSummary
+}
+
+export function getDiaryDraft() {
+  return diaryDraft
+}
+
+export function getPlaceDraft() {
+  return placeDraft
+}
+
+export function getRoomDraft() {
+  return roomDraft
 }
 
 export function listPlaces() {
