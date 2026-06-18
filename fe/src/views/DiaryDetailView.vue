@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   deleteDiary,
@@ -108,6 +108,7 @@ async function handleDelete() {
 }
 
 onMounted(loadDiary)
+watch(() => route.params.id, loadDiary)
 </script>
 
 <template>

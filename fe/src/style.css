@@ -846,3 +846,154 @@ button {
     flex-direction: column;
   }
 }
+
+/* ── Welcome / Onboarding ─────────────────────────────────────────────────── */
+
+.welcome-shell {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 213, 226, 0.8), transparent 30%),
+    radial-gradient(circle at 80% 10%, rgba(191, 230, 255, 0.9), transparent 30%),
+    linear-gradient(135deg, #fff8fb 0%, #eff9ff 48%, #fffdf7 100%);
+}
+
+.welcome-card {
+  width: 100%;
+  max-width: 480px;
+  padding: 48px 40px;
+  border: 1px solid rgba(255, 255, 255, 0.74);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.68);
+  box-shadow: 0 24px 80px rgba(85, 122, 155, 0.16);
+  backdrop-filter: blur(22px);
+}
+
+.welcome-header {
+  margin-bottom: 36px;
+  text-align: center;
+}
+
+.welcome-label {
+  margin: 0 0 8px;
+  color: #df7797;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.welcome-header h1 {
+  margin: 0;
+  color: #27384f;
+  font-size: 56px;
+  line-height: 1;
+}
+
+.welcome-desc {
+  margin: 12px 0 0;
+  color: #5c7286;
+  font-size: 15px;
+}
+
+.welcome-form {
+  display: grid;
+  gap: 16px;
+}
+
+.welcome-mode {
+  display: grid;
+  gap: 20px;
+  text-align: center;
+}
+
+.mode-greeting {
+  margin: 0;
+  color: #243447;
+  font-size: 18px;
+}
+
+.mode-desc {
+  margin: 0;
+  color: #5c7286;
+}
+
+.mode-buttons {
+  display: grid;
+  gap: 12px;
+}
+
+.welcome-done {
+  display: grid;
+  gap: 16px;
+  text-align: center;
+}
+
+.done-label {
+  margin: 0;
+  color: #df7797;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.welcome-done h2 {
+  margin: 0;
+  color: #243447;
+  font-size: 24px;
+}
+
+.done-desc {
+  margin: 0;
+  color: #5c7286;
+}
+
+.invite-code-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: rgba(239, 248, 255, 0.9);
+  border: 1px solid rgba(117, 157, 189, 0.28);
+  border-radius: 12px;
+}
+
+.invite-code {
+  flex: 1;
+  color: #243447;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+.invite-copy-btn {
+  flex: 0 0 auto;
+  min-height: 38px;
+  padding: 0 14px;
+  font-size: 13px;
+}
+
+/* ── Place list delete button ─────────────────────────────────────────────── */
+
+.place-list__actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.place-delete-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: #b9556c;
+  font-size: 18px;
+  font-weight: 700;
+  background: rgba(255, 238, 244, 0.8);
+  border: 1px solid rgba(202, 95, 122, 0.22);
+  border-radius: 999px;
+  line-height: 1;
+}

@@ -1,60 +1,71 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
-import { fetchPlaceDraft, fetchPlaces, type Place, type PlaceDraft } from '../api/prototypeApi'
+import {
+  addPlaceToRoom,
+  fetchRoom,
+  removePlaceFromRoom,
+  type Place,
+} from '../api/prototypeApi'
 import AppShell from '../components/AppShell.vue'
 import GlassPanel from '../components/GlassPanel.vue'
 import PageHero from '../components/PageHero.vue'
+import { getCurrentUser } from '../composables/useCurrentUser'
 
 const places = ref<Place[]>([])
 const activeCategory = ref('전체')
 const errorMessage = ref('')
+const isAdding = ref(false)
 
-const form = reactive<PlaceDraft>({
-  name: '',
-  category: '',
-})
+const form = reactive({ name: '', category: '' })
+const user = getCurrentUser()
 
-const categories = computed(() => ['전체', ...new Set(places.value.map((place) => place.category))])
-const filteredPlaces = computed(() => {
-  if (activeCategory.value === '전체') {
-    return places.value
-  }
-
-  return places.value.filter((place) => place.category === activeCategory.value)
-})
+const categories = computed(() => ['전체', ...new Set(places.value.map((p) => p.category))])
+const filteredPlaces = computed(() =>
+  activeCategory.value === '전체'
+    ? places.value
+    : places.value.filter((p) => p.category === activeCategory.value),
+)
 
 onMounted(async () => {
+  if (!user) return
   try {
-    const [placeResponse, draftResponse] = await Promise.all([fetchPlaces(), fetchPlaceDraft()])
-
-    places.value = placeResponse.places
-    form.name = draftResponse.draft.name
-    form.category = draftResponse.draft.category
+    const response = await fetchRoom(user.roomId)
+    places.value = response.room.places
   } catch {
     errorMessage.value = '장소 데이터를 불러오지 못했습니다.'
   }
 })
 
-function addPlace() {
+async function addPlace() {
   errorMessage.value = ''
-
   if (!form.name.trim() || !form.category.trim()) {
     errorMessage.value = '장소명과 카테고리를 입력해 주세요.'
     return
   }
+  if (!user) return
 
-  places.value = [
-    {
-      id: `place-${Date.now()}`,
-      name: form.name.trim(),
-      category: form.category.trim(),
-      status: '새로 추가됨',
-    },
-    ...places.value,
-  ]
-  activeCategory.value = '전체'
-  form.name = ''
-  form.category = ''
+  isAdding.value = true
+  try {
+    const response = await addPlaceToRoom(user.roomId, form.name.trim(), form.category.trim())
+    places.value = [response.place, ...places.value]
+    activeCategory.value = '전체'
+    form.name = ''
+    form.category = ''
+  } catch {
+    errorMessage.value = '장소를 추가하지 못했습니다.'
+  } finally {
+    isAdding.value = false
+  }
+}
+
+async function removePlace(placeId: string) {
+  if (!user) return
+  try {
+    await removePlaceFromRoom(user.roomId, placeId)
+    places.value = places.value.filter((p) => p.id !== placeId)
+  } catch {
+    errorMessage.value = '장소를 삭제하지 못했습니다.'
+  }
 }
 </script>
 
@@ -89,9 +100,21 @@ function addPlace() {
                 <strong>{{ place.name }}</strong>
                 <span>{{ place.category }}</span>
               </div>
-              <em class="status-badge">{{ place.status }}</em>
+              <div class="place-list__actions">
+                <em class="status-badge">{{ place.status }}</em>
+                <button
+                  class="place-delete-btn"
+                  type="button"
+                  aria-label="삭제"
+                  @click="removePlace(place.id)"
+                >
+                  ×
+                </button>
+              </div>
             </li>
           </ul>
+
+          <p v-if="filteredPlaces.length === 0" class="muted-text">아직 저장된 장소가 없습니다.</p>
         </GlassPanel>
 
         <GlassPanel>
@@ -105,9 +128,10 @@ function addPlace() {
               <span>카테고리</span>
               <input v-model="form.category" class="mock-input" placeholder="데이트" />
             </label>
-            <button class="primary-button" type="submit">장소 추가하기</button>
+            <button class="primary-button" type="submit" :disabled="isAdding">
+              {{ isAdding ? '추가 중...' : '장소 추가하기' }}
+            </button>
           </form>
-          <p class="muted-text">공유 장소 목록 API가 생기면 같은 입력 흐름으로 서버 저장을 연결할 수 있습니다.</p>
         </GlassPanel>
       </section>
     </div>

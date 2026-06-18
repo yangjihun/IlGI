@@ -3,7 +3,6 @@ import { computed, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import {
   fetchHomeSummary,
-  fetchPlaces,
   fetchRoom,
   type HomeSummary,
   type MapMarker,
@@ -13,32 +12,35 @@ import {
 import AppShell from '../components/AppShell.vue'
 import MapPreview from '../components/MapPreview.vue'
 import SummaryCard from '../components/SummaryCard.vue'
+import { getCurrentUser } from '../composables/useCurrentUser'
 
 const home = ref<HomeSummary | null>(null)
-const places = ref<Place[]>([])
 const room = ref<Room | null>(null)
 const selectedMarkerId = ref('')
 const isLoading = ref(true)
 const errorMessage = ref('')
 
+const user = getCurrentUser()
+
 const activeMarker = computed(() => {
   const markers = home.value?.markers ?? []
   return markers.find((marker) => marker.id === selectedMarkerId.value) ?? markers[0]
 })
-const wishlistItems = computed(() => places.value.map((place) => place.name))
+const wishlistItems = computed<string[]>(() => room.value?.places.map((p) => p.name) ?? [])
 
 function selectMarker(marker: MapMarker) {
   selectedMarkerId.value = marker.id
 }
 
 onMounted(async () => {
+  if (!user) return
   try {
-    const homeResponse = await fetchHomeSummary()
-    const placeResponse = await fetchPlaces()
-    const roomResponse = await fetchRoom(homeResponse.home.roomId)
+    const [homeResponse, roomResponse] = await Promise.all([
+      fetchHomeSummary(),
+      fetchRoom(user.roomId),
+    ])
 
     home.value = homeResponse.home
-    places.value = placeResponse.places
     room.value = roomResponse.room
     selectedMarkerId.value = homeResponse.home.markers[0]?.id ?? ''
   } catch {
@@ -85,7 +87,7 @@ onMounted(async () => {
       <SummaryCard
         eyebrow="Wishlist"
         title="같이 가고 싶은 곳"
-        :value="String(home?.wishlistCount ?? places.length)"
+        :value="String(home?.wishlistCount ?? room?.places.length ?? 0)"
         description="이번 주말에 함께 고를 장소를 모아둘 수 있습니다."
         :items="wishlistItems"
       />

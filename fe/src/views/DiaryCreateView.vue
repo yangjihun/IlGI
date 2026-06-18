@@ -10,14 +10,16 @@ import {
 import AppShell from '../components/AppShell.vue'
 import GlassPanel from '../components/GlassPanel.vue'
 import PageHero from '../components/PageHero.vue'
+import { getCurrentUser } from '../composables/useCurrentUser'
 
 const router = useRouter()
+const user = getCurrentUser()
 const isSubmitting = ref(false)
 const errorMessage = ref('')
 
 const form = reactive<CreateDiaryInput>({
   title: '',
-  author: 'J',
+  author: user?.name ?? '',
   date: new Date().toISOString().slice(0, 10),
   placeName: '',
   content: '',
@@ -29,7 +31,7 @@ const previewContent = computed(() => form.content.trim() || '작성한 기억�
 
 function fillDraft(draft: DiaryDraft) {
   form.title = draft.title ?? `${draft.placeName} 기록`
-  form.author = draft.author ?? form.author
+  form.author = draft.author ?? user?.name ?? form.author
   form.date = draft.date
   form.placeName = draft.placeName
   form.content = draft.content
@@ -87,7 +89,7 @@ async function handleSubmit() {
 
             <label class="field-group">
               <span>작성자</span>
-              <input v-model="form.author" class="mock-input" type="text" placeholder="J" />
+              <input v-model="form.author" class="mock-input" type="text" :placeholder="user?.name ?? ''" />
             </label>
 
             <label class="field-group">
