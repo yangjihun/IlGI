@@ -51,8 +51,9 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  if (to.name === 'welcome') return
+  if (to.name === 'welcome') return true
   if (!getCurrentUser()) return { name: 'welcome' }
+  return true
 })
 
 export default router

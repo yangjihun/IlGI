@@ -1,16 +1,22 @@
 import { Router } from 'express'
-import {
-  handleAddPlace,
-  handleCreateRoom,
-  handleGetRoom,
-  handleJoinRoom,
-  handleRemovePlace,
-} from '../controllers/room.controller.js'
+import type { DiaryQueryable } from '../repositories/postgres-diary.repository.js'
+import { createRoomHandlers } from '../controllers/room.controller.js'
 
-export const roomRouter = Router()
+export function createRoomRouter(db: DiaryQueryable) {
+  const router = Router()
+  const {
+    handleCreateRoom,
+    handleJoinRoom,
+    handleGetRoom,
+    handleAddPlace,
+    handleRemovePlace,
+  } = createRoomHandlers(db)
 
-roomRouter.post('/rooms', handleCreateRoom)
-roomRouter.post('/rooms/join', handleJoinRoom)
-roomRouter.get('/rooms/:id', handleGetRoom)
-roomRouter.post('/rooms/:id/places', handleAddPlace)
-roomRouter.delete('/rooms/:id/places/:placeId', handleRemovePlace)
+  router.post('/rooms', handleCreateRoom)
+  router.post('/rooms/join', handleJoinRoom)
+  router.get('/rooms/:id', handleGetRoom)
+  router.post('/rooms/:id/places', handleAddPlace)
+  router.delete('/rooms/:id/places/:placeId', handleRemovePlace)
+
+  return router
+}

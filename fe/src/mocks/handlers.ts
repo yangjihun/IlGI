@@ -26,6 +26,12 @@ type Room = {
   places: RoomPlace[]
 }
 
+type MockUser = {
+  id: string
+  name: string
+  roomId: string | null
+}
+
 // ── In-memory stores ──────────────────────────────────────────────────────────
 
 const diaries = [...prototypeData.diaries]
@@ -44,8 +50,24 @@ const rooms = new Map<string, Room>([
   ],
 ])
 
+// 이름을 키로 하는 유저 맵
+const usersByName = new Map<string, MockUser>()
+
 function generateInviteCode() {
   return `IlGI-${Math.random().toString(36).substring(2, 6).toUpperCase()}`
+}
+
+function findOrCreateUser(name: string): MockUser {
+  const existing = usersByName.get(name)
+  if (existing) return existing
+
+  const user: MockUser = {
+    id: `user-mock-${Date.now()}`,
+    name,
+    roomId: null,
+  }
+  usersByName.set(name, user)
+  return user
 }
 
 // ── Prototype ─────────────────────────────────────────────────────────────────
@@ -65,6 +87,26 @@ export const handlers = [
 
   http.get('*/api/prototype/room-draft', () => {
     return HttpResponse.json({ draft: prototypeData.drafts.room })
+  }),
+
+  // ── Auth ───────────────────────────────────────────────────────────────────
+
+  http.post('*/api/auth/login', async ({ request }) => {
+    const body = (await request.json()) as { name?: string }
+    const name = body.name?.trim() ?? ''
+
+    if (!name) {
+      return HttpResponse.json({ message: '이름이 필요합니다.' }, { status: 400 })
+    }
+
+    const user = findOrCreateUser(name)
+
+    if (user.roomId) {
+      const room = rooms.get(user.roomId)
+      return HttpResponse.json({ user, room })
+    }
+
+    return HttpResponse.json({ user })
   }),
 
   // ── Diaries ────────────────────────────────────────────────────────────────
@@ -136,12 +178,13 @@ export const handlers = [
   // ── Rooms ──────────────────────────────────────────────────────────────────
 
   http.post('*/api/rooms', async ({ request }) => {
-    const body = (await request.json()) as { name?: string; userName?: string }
+    const body = (await request.json()) as { name?: string; userId?: string; userName?: string }
     const name = body.name?.trim() ?? ''
+    const userId = body.userId?.trim() ?? ''
     const userName = body.userName?.trim() ?? ''
 
-    if (!name || !userName) {
-      return HttpResponse.json({ message: '방 이름과 사용자 이름이 필요합니다.' }, { status: 400 })
+    if (!name || !userId || !userName) {
+      return HttpResponse.json({ message: '방 이름, 사용자 ID, 사용자 이름이 필요합니다.' }, { status: 400 })
     }
 
     const id = `room-${Date.now()}`
@@ -154,16 +197,22 @@ export const handlers = [
       places: [],
     }
     rooms.set(id, room)
+
+    // 유저의 roomId 업데이트
+    const user = [...usersByName.values()].find((u) => u.id === userId)
+    if (user) user.roomId = id
+
     return HttpResponse.json({ room }, { status: 201 })
   }),
 
   http.post('*/api/rooms/join', async ({ request }) => {
-    const body = (await request.json()) as { inviteCode?: string; userName?: string }
+    const body = (await request.json()) as { inviteCode?: string; userId?: string; userName?: string }
     const inviteCode = body.inviteCode?.trim() ?? ''
+    const userId = body.userId?.trim() ?? ''
     const userName = body.userName?.trim() ?? ''
 
-    if (!inviteCode || !userName) {
-      return HttpResponse.json({ message: '초대 코드와 사용자 이름이 필요합니다.' }, { status: 400 })
+    if (!inviteCode || !userId || !userName) {
+      return HttpResponse.json({ message: '초대 코드, 사용자 ID, 사용자 이름이 필요합니다.' }, { status: 400 })
     }
 
     let found: Room | undefined
@@ -182,6 +231,10 @@ export const handlers = [
       found.participants.push(userName)
       found.timeline.unshift(`${userName}이 방에 참여했습니다.`)
     }
+
+    // 유저의 roomId 업데이트
+    const user = [...usersByName.values()].find((u) => u.id === userId)
+    if (user) user.roomId = found.id
 
     return HttpResponse.json({ room: found })
   }),

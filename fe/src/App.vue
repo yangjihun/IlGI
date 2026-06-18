@@ -4,5 +4,5 @@ const route = useRoute()
 </script>
 
 <template>
-  <RouterView :key="route.name as string" />
+  <RouterView :key="route.path" />
 </template>

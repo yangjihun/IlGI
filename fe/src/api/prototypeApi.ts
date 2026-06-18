@@ -130,21 +130,35 @@ export function deleteDiary(id: string) {
   })
 }
 
-// ── Rooms ─────────────────────────────────────────────────────────────────────
+// ── Auth ──────────────────────────────────────────────────────────────────────
 
-export function createRoom(name: string, userName: string) {
-  return requestJson<{ room: Room }>('/api/rooms', {
+export type LoginUser = { id: string; name: string; roomId: string | null }
+
+export type LoginResponse = { user: LoginUser; room?: Room }
+
+export function login(name: string) {
+  return requestJson<LoginResponse>('/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, userName }),
+    body: JSON.stringify({ name }),
   })
 }
 
-export function joinRoom(inviteCode: string, userName: string) {
+// ── Rooms ─────────────────────────────────────────────────────────────────────
+
+export function createRoom(name: string, userId: string, userName: string) {
+  return requestJson<{ room: Room }>('/api/rooms', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, userId, userName }),
+  })
+}
+
+export function joinRoom(inviteCode: string, userId: string, userName: string) {
   return requestJson<{ room: Room }>('/api/rooms/join', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ inviteCode, userName }),
+    body: JSON.stringify({ inviteCode, userId, userName }),
   })
 }
 
